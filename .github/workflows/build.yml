@@ -12,7 +12,11 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: 8
-      - run: apt-get update && apt-get install -y gcc
+      - name: Set up GCC
+        uses: egor-tensin/setup-gcc@v1
+        with:
+          version: latest
+          platform: x64
       - run: chmod +x ./scripts/make.sh
       - run: mvn -B install --no-transfer-progress
 

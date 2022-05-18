@@ -1,0 +1,35 @@
+name: build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: 8
+      - run: apt-get update && apt-get install -y gcc
+      - run: chmod +x ./scripts/make.sh
+      - run: mvn -B install --no-transfer-progress
+
+#  publish-snapshot:
+#    needs: coverage
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@v3
+#
+#      - name: Set up settings.xml for GitHub Packages
+#        uses: actions/setup-java@v3
+#        with:
+#          distribution: 'adopt'
+#          java-version: 8
+#
+#      - name: Publish SNAPSHOT version to GitHub Packages (we can skip tests, since we only deploy, if the build workflow succeeded)
+#        run: mvn -B --no-transfer-progress deploy -DskipTests --projects cxf-spring-boot-starter
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
